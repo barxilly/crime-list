@@ -3,13 +3,13 @@ import './App.css'
 import '@mantine/core/styles.css'
 import wiki from 'wikipedia'
 import { useState } from 'react';
-import { BiArrowBack, BiQuestionMark, BiShare } from 'react-icons/bi';
+import { BiArrowBack, BiShare } from 'react-icons/bi';
 import { BsInfo, BsQrCode } from 'react-icons/bs';
 import { FaMarkdown } from 'react-icons/fa';
 import TurndownService from 'turndown';
 import ReactDOM from 'react-dom';
 import QRCode from 'qrcode'
-import { CgClose, CgColorBucket, CgColorPicker } from 'react-icons/cg';
+import { CgClose } from 'react-icons/cg';
 import { IoColorPalette } from 'react-icons/io5';
 
 function App() {
@@ -47,7 +47,7 @@ function App() {
     'Links to DNA evidence',
   ]
 
-  let questions = [
+  /*let questions = [
     [
       'How old were the 2 boys who murdered James Bulger?',
       'What was the name of Bulger\'s mother?',
@@ -58,7 +58,7 @@ function App() {
       'How old was Sarah?',
       'What was the name of the victim?'
     ]
-  ]
+  ]*/
 
   // sort the crimes alphabetically
   crimes.sort();
@@ -187,7 +187,7 @@ function App() {
               return
             }
             const info = <MantineProvider><Center id="infoc"><Card style={{ width: '30em', height: '20em', background: 'white', borderRadius: '1em', padding: '1em', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
-              <Text style={{ textAlign: 'center' }}>I made this app to help with my Criminology A-Level, it contains case studies that I can use in my classes. It's not perfect, but it's better than nothing.</Text>
+              <Text style={{ textAlign: 'center' }}>I made this app to help with my Criminology A-Level, it contains case studies that I can use in my classes. It's not perfect, but it's better than nothing. I get the info from Wikipedia. I plan to add a quiz feature in the near future.</Text>
             </Card></Center></MantineProvider>
             const infoContainer = document.createElement('div');
             document.body.appendChild(infoContainer);
@@ -197,8 +197,8 @@ function App() {
           }}>
             <BsInfo style={{ width: '2em', height: '2em' }} />
           </ActionIcon>
-          <Title style={{ textAlign: 'center' }}>T</Title>
-          <Text style={{ textAlign: 'center' }}>SUBTITLE</Text>
+          <Title style={{ textAlign: 'center' }}>UK Case Studies</Title>
+          <Text style={{ textAlign: 'center' }}>A list of case studies for Criminology A-Level</Text>
           <Autocomplete id='search-input' radius='md' placeholder="Search for a crime" data={crimes} limit={3} />
           <Flex style={{ justifyContent: 'center', gap: '1em' }}>
             <Button loading={loading} loaderProps={{ type: 'dots' }} radius='md' onClick={() => search((document.getElementById('search-input') as HTMLInputElement).value)}>Get Crime</Button>
