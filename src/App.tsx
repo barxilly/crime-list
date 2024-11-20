@@ -1,4 +1,4 @@
-import { ActionIcon, Autocomplete, Button, Center, Flex, Image, Loader, MantineProvider, Stack, Text, Title } from '@mantine/core'
+import { ActionIcon, Autocomplete, Button, Card, Center, Flex, Image, Loader, MantineProvider, Stack, Text, Title } from '@mantine/core'
 import './App.css'
 import '@mantine/core/styles.css'
 import wiki from 'wikipedia'
@@ -9,11 +9,13 @@ import { FaMarkdown } from 'react-icons/fa';
 import TurndownService from 'turndown';
 import ReactDOM from 'react-dom';
 import QRCode from 'qrcode'
-import { CgColorBucket, CgColorPicker } from 'react-icons/cg';
+import { CgClose, CgColorBucket, CgColorPicker } from 'react-icons/cg';
 import { IoColorPalette } from 'react-icons/io5';
 
 function App() {
   const [loading, setLoading] = useState(false);
+  let cur = document.body.style.backgroundColor;
+
 
   let crimes = [
     '2005 London bombings',
@@ -68,6 +70,18 @@ function App() {
     document.getElementById('search-page')!.style.display = 'none';
   }
 
+  function col(plus = true) {
+    let bgcols = ['#ffffff', '#faf8f0', '#ece3bb'];
+    let idx = bgcols.indexOf(cur);
+    if (plus) idx = (idx + 1);;
+    console.log(idx);
+    if (idx < 0) idx = 0;
+    if (idx > bgcols.length - 1) idx = 0;
+    document.body.style.backgroundColor = bgcols[idx];
+    cur = bgcols[idx];
+    localStorage.setItem('colour', cur);
+  }
+
   function loaded() {
     // Search the /?s= property if it exists
     const searchst = new URLSearchParams(window.location.search).get('s');
@@ -82,6 +96,10 @@ function App() {
       ReactDOM.render(<MantineProvider><Loader type='dots' color='#000' /></MantineProvider>, loaderContainer);
       search(searchst);
     }
+
+    // Load colour from local storage
+    cur = localStorage.getItem('colour') || '#faf8f0';
+    if (localStorage.getItem('colour')) col(false);
 
     window.addEventListener('scroll', () => {
       if (window.scrollY === 0) {
@@ -110,13 +128,25 @@ function App() {
     <MantineProvider>
       <Center style={{ height: '100vh', transition: 'all 0.5s ease-in-out' }} id='search-page'>
         <Stack style={{ width: '30em' }}>
-          <ActionIcon id='colours' style={{ position: 'fixed', width: '3em', height: '3em', top: '1.2em', right: '1.2em', color: 'black', transition: 'all 0.25s ease-in-out', borderRadius: '50%', background: 'linear-gradient(to bottom right, #ff000044, #ffff0044, #00ff0044, #0000ff44, #ff00ff44, #00ffff44)', backgroundSize: '200% 200%', border: 'none', backdropFilter: 'blur(0.2em)' }} onClick={() => {
-            document.body.style.backgroundColor = '#ffffff';
-          }}>
+          <ActionIcon id='back-button-c' style={{ opacity: '0', position: 'fixed', width: '3em', height: '3em', top: '1.2em', left: '1.2em', color: 'black', border: '2px solid #ffffffdd', backgroundColor: '#ffffffaa', backdropFilter: 'blur(0.2em)', transition: 'all 0.25s ease-in-out', borderRadius: '50%' }} onClick={() => window.location.reload()}>
+            <CgClose style={{ width: '2em', height: '2em' }} />
+          </ActionIcon>
+          <ActionIcon id='colours' style={{ position: 'fixed', width: '3em', height: '3em', top: '1.2em', right: '1.2em', color: 'black', transition: 'all 0.25s ease-in-out', borderRadius: '50%', background: 'linear-gradient(to bottom right, #ff000044, #ffff0044, #00ff0044, #0000ff44, #ff00ff44, #00ffff44)', backgroundSize: '200% 200%', border: 'none', backdropFilter: 'blur(0.2em)' }} onClick={col}>
             <IoColorPalette style={{ width: '1.6em', height: '2em' }} />
           </ActionIcon>
           <ActionIcon id='info' style={{ position: 'fixed', width: '3em', height: '3em', top: '1.2em', right: '5em', color: 'black', transition: 'all 0.25s ease-in-out', borderRadius: '50%', background: '#ffffff88', backgroundSize: '200% 200%', border: '2px solid #ffffffdd', backdropFilter: 'blur(0.2em)' }} onClick={() => {
-            document.body.style.backgroundColor = '#ffffff';
+            const info = <MantineProvider><Center><Card style={{ width: '30em', height: '20em', background: 'white', borderRadius: '1em', padding: '1em', position: 'fixed', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 1000 }}>
+              <Text style={{ textAlign: 'center' }}>TITLE</Text>
+              <Text style={{ textAlign: 'center' }}>SUBTITLE</Text>
+              <Text style={{ textAlign: 'center' }}>DESCRIPTION</Text>
+              <Text style={{ textAlign: 'center' }}>SOURCE</Text>
+              <Text style={{ textAlign: 'center' }}>DATE</Text>
+            </Card></Center></MantineProvider>
+            const infoContainer = document.createElement('div');
+            document.body.appendChild(infoContainer);
+            ReactDOM.render(info, infoContainer);
+
+            document.getElementById('back-button-c')!.style.opacity = '1';
           }}>
             <BsInfo style={{ width: '2em', height: '2em' }} />
           </ActionIcon>

@@ -1,14 +1,19 @@
 body {
     overflow-x: hidden;
-    background-color: #faf8f0 !important;
+    background-color: #faf8f0;
     transition: all 0.5s ease-in-out !important;
 }
 
 input {
-    background-color: #ece3bb !important;
+    background-color: #00000022 !important;
     color: #000 !important;
     border: 0px solid #000 !important;
     box-shadow: 0px 0px 0.4em #00000055 inset!important;
+}
+
+.mantine-Card-root {
+    background-color: #00000011 !important;
+    backdrop-filter: blur(2em) !important;
 }
 
 .mantine-Popover-dropdown {
